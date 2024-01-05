@@ -32,22 +32,26 @@ always @(*) begin
 
         6'b000010: begin // SUB
             result = A - B;
+			$display("ALU result %0b", result);
             carry = B > A; // Borrow in subtraction is the carry here
             overflow = ~A[31] & B[31] & result[31] | A[31] & ~B[31] & ~result[31]; // Overflow for subtraction
         end
 
         6'b000011: begin // OR
-            result = A | B;
+            result = A | B;	 
+			$display("ALU result %0b", result);
         end		
 		
 		//I-Types Inst 
 		
 		6'b000100: begin // ANDI
-            result = A & B;
+            result = A & B;	 
+			$display("ALU result %0b", result);
         end		
 		
 		6'b000101: begin // ADDI
-            result = A + B;	 
+            result = A + B;
+			$display("ALU result %0b", result);
 			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
             overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow for addition
         end		
@@ -60,7 +64,7 @@ always @(*) begin
     endcase
 
     zero = (result == 0); // checks if the result is equal to zero and assigns the result to the zero flag
-    $display("src1 = %0h\n src2=%0h\n , opcode = %0d\n Alu Result --- > %0h\n zero_flag %0b ", A, B, opcode, result, zero);
+    $display("source1 = %0h \n source2=%0h\n , opcode = %0d \n Alu Result = %0h \n Z flag =  %0b ", A, B, opcode, result, zero);
 
     negative = result[31]; // MSB as sign bit
 end
