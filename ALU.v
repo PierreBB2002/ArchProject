@@ -6,7 +6,7 @@ module ALU (
     output reg carry,
     output reg zero,
     output reg negative,
-    output reg overflow
+    output reg overflow,
 );
 
 initial begin
