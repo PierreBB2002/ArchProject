@@ -6,7 +6,7 @@ module ALU (
     output reg carry,
     output reg zero,
     output reg negative,
-    output reg overflow,
+    output reg overflow
 );
 
 initial begin
@@ -37,19 +37,14 @@ always @(*) begin
             overflow = ~A[31] & B[31] & result[31] | A[31] & ~B[31] & ~result[31]; // Overflow for subtraction
         end
 
-        6'b000011: begin // OR
-            result = A | B;	 
-			$display("ALU result %0b", result);
-        end		
-		
 		//I-Types Inst 
 		
-		6'b000100: begin // ANDI
+		6'000011: begin // ANDI
             result = A & B;	 
 			$display("ALU result %0b", result);
         end		
 		
-		6'b000101: begin // ADDI
+		6'000100: begin // ADDI
             result = A + B;
 			$display("ALU result %0b", result);
 			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
@@ -63,7 +58,10 @@ always @(*) begin
         end
     endcase
 
-    zero = (result == 0); // checks if the result is equal to zero and assigns the result to the zero flag
+    if (result == 0) //set zero flag is equal
+		zero = 1;
+	else 
+		zero = 0;
     $display("source1 = %0h \n source2=%0h\n , opcode = %0d \n Alu Result = %0h \n Z flag =  %0b ", A, B, opcode, result, zero);
 
     negative = result[31]; // MSB as sign bit
