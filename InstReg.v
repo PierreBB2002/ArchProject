@@ -33,16 +33,12 @@ begin
 		mode = inst[1:0];
 	end 
 	
-	else if (I_Type_Bits == 6'b001100) // J_Type --> JMP
+	else if ((I_Type_Bits == 6'b001100) || (I_Type_Bits == 6'b001101)) // J_Type --> JMP or CALL
 	begin 
 		imm_26 = {PC[31:26], inst[25:0]}; 
 	end		
 	
-	else if (I_Type_Bits == 6'b001101) // J_Type --> CALL
-	begin 
-		imm_26 = {PC[31:26], inst[25:0]};
-	end	
-	else if ((I_Type_Bits == 6'b001111) || (I_Type_Bits == 6'b010000)) // S-Type PUSH or POP
+	else if ((I_Type_Bits == 6'b001111) || (I_Type_Bits == 6'b010000)) // S-Type --> PUSH or POP
 	begin
 		inst_rd = inst[25:22];
 	end
