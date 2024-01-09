@@ -1,9 +1,16 @@
-module RegFile(
+module RF(
     input clk, reg_write,
     input [4:0] RA, RB, RW,
     input [31:0] Bus_W,
     output wire [31:0] Bus_A, Bus_B
 );
+integer i=0;
+    
+initial
+    begin
+		for(i=0;i<32; i=i+1)
+			register_file[i]=0;	
+	end
 
     reg [31:0] register_file [0:15]; // 16 registers, each 32 bits wide
 
