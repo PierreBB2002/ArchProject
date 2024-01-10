@@ -39,12 +39,12 @@ always @(*) begin
 
 		//I-Types Inst 
 		
-		6'000011: begin // ANDI
+		6'b000011: begin // ANDI
             result = A & B;	 
 			$display("ALU result %0b", result);
         end		
 		
-		6'000100: begin // ADDI
+		6'b000100: begin // ADDI
             result = A + B;
 			$display("ALU result %0b", result);
 			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
