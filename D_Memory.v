@@ -35,8 +35,25 @@ module MemoryWithStack(
                 data = {memory_array[sp+3], memory_array[sp+2], memory_array[sp+1], memory_array[sp]};
                 sp = sp + 4; // Increment stack pointer by 4 to move one 'word' up
             end
-            // Handle other opcodes for different memory operations
-            // ...
+            // Opcode for Load Word (LW)
+        6'b000101: begin // Assuming '000101' is the opcode for LW
+            // Calculate address by adding base register (Rs1) and sign-extended immediate value
+            // Perform the load operation
+            read_data <= memory_array[{address[31:2], 2'b00} + { {14{imm16[15]}}, imm16 }]; // Address is word-aligned
+        end
+        
+        // Opcode for Load Word and Post-Increment (LW.POI)
+        6'b000110: begin // Assuming '000110' is the opcode for LW.POI
+            // Calculate address, perform the load operation, and set post-increment signal
+            read_data <= memory_array[{address[31:2], 2'b00} + { {14{imm16[15]}}, imm16 }]; // Address is word-aligned
+            // Post-increment would be handled outside of this module, likely in the register file logic
+        end
+        
+        // Opcode for Store Word (SW)
+        6'b000111: begin // Assuming '000111' is the opcode for SW
+            // Calculate address and perform the store operation
+            memory_array[{address[31:2], 2'b00} + { {14{imm16[15]}}, imm16 }] <= data; // Address is word-aligned
+        end
         endcase
     end
 
