@@ -11,41 +11,51 @@ module MemoryWithStack(
     output reg [31:0] sp             // Stack Pointer
 );
 
-    reg [31:0] memory_array [0:1023]; // Memory array
+    // Memory array now byte-addressable
+    reg [7:0] memory_array [4095:0]; // Adjusting the size for byte-addressability
 
-    // Initialize stack pointer
+    // Adjusted stack pointer initialization for byte-addressable memory
     initial begin
-        sp = 10'd1023; // Initialize stack pointer to the top of memory
+        sp = 10'd4095; // Initialize stack pointer to the top of byte-addressable memory
     end
 
-    // Handle memory operations and stack operations based on opcode
     always @(posedge clk) begin
         case (opcode)
             6'b001111: begin // PUSH operation code
-                sp = sp - 1; // Decrement stack pointer
-                memory_array[sp] = data; // Push data onto stack
+                // Adjusting for byte-addressable memory
+                sp = sp - 4; // Decrement stack pointer by 4 to move one 'word' down
+                // Writing data byte by byte
+                memory_array[sp] = data[7:0];
+                memory_array[sp+1] = data[15:8];
+                memory_array[sp+2] = data[23:16];
+                memory_array[sp+3] = data[31:24];
             end
             6'b010000: begin // POP operation code
-                data = memory_array[sp]; // Pop data from stack
-                sp = sp + 1; // Increment stack pointer
-                // Additional logic to store popped value into the destination register if needed
+                // Reading data byte by byte and combining into a word
+                data = {memory_array[sp+3], memory_array[sp+2], memory_array[sp+1], memory_array[sp]};
+                sp = sp + 4; // Increment stack pointer by 4 to move one 'word' up
             end
             // Handle other opcodes for different memory operations
             // ...
         endcase
     end
 
-    // Logic for memory read and write
+    // Logic for memory read and write, adjusted for byte-addressable memory
     always @(posedge clk) begin
         if (mem_read) begin
-            read_data <= memory_array[address[9:0]]; // Read from memory
+            // Combine bytes into a single word for reading
+            read_data <= {memory_array[address+3], memory_array[address+2], memory_array[address+1], memory_array[address]};
         end
         if (mem_write) begin
-            memory_array[address[9:0]] <= data; // Write to memory
+            // Write data byte by byte
+            memory_array[address] <= data[7:0];
+            memory_array[address+1] <= data[15:8];
+            memory_array[address+2] <= data[23:16];
+            memory_array[address+3] <= data[31:24];
         end
     end
 
-    // Tri-state buffer for data bus
-    assign data = (mem_read ? read_data : 32'bz);
+    // Tri-state buffer for data bus, adjusted for byte-addressable memory
+    assign data = (mem_read ? read_data : 32'z);
 
 endmodule
