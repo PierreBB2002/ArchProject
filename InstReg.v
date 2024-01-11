@@ -1,10 +1,10 @@
 module IR(	
-	input [31:0] PC;
-	input [31:0] inst;
-	output reg [5:0] opcode;
-	output reg [3:0] inst_rs1, inst_rs2, inst_rd; 
-	output reg [15:0] imm_16; 
-	output reg [31:0] imm_26;
+	input [31:0] PC,
+	input [31:0] inst,
+	output reg [5:0] opcode,
+	output reg [3:0] inst_rs1, inst_rs2, inst_rd, 
+	output reg [15:0] imm_16, 
+	output reg [31:0] imm_26,
 	output reg [1:0] mode
 );
 
