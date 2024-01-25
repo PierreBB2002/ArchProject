@@ -33,6 +33,29 @@ module ControlUnit( opcode, zeroFlag, carryFlag, negFlag, state, mode, PC_src, e
 				if (opcode == 6'b001100)  begin
 					next_state = IF_STAGE;
 				end
-				
+				else
+					next_state = EX_STAGE;
+			end
+			EX_STAGE: begin
+				if (opcode == 6'000000 || opcode == 6'b000001 || opcode == 6'b000010 || opcode == 6'b000011 || opcode == 6'b000100)	
+					next_state = WB_STAGE;
+				else if (opcode == 6'b000101 || opcode == 6'b000110 || opcode == 6'b000111 || opcode == 6'b001101 || opcode == 6'b001110|| opcode == 6'b001111|| opcode == 6'b001111)  
+					next_state = MEM_STAGE;
+				else 
+					next_state = IF_STAGE;
+			end
+			MEM_STAGE: begin
+				if (opcode == 6'b000101 || opcode == 6'b000110 || opcode == 6'b010000)
+					next_state = WB_STAGE;	 
+				else 
+					next_state = IF_STAGE;
+			end	
+			WB_STAGE: begin
+				next_state = IF_STAGE;
+			end
+		end
+		
+		
+			
 
 	
