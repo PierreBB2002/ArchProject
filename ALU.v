@@ -50,29 +50,29 @@ always @(*) begin
 			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
             overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow
         end	
-		6'001000: begin //BGT
+		6'b001000: begin //BGT
 			result = A - B;	  
 			$display("ALU result %0b", result);
-			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
-            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow 
+            carry = B > A; // Borrow in subtraction is the carry here
+            overflow = ~A[31] & B[31] & result[31] | A[31] & ~B[31] & ~result[31]; // Overflow for subtraction
 		end
-		6'001001: begin //BLT
+		6'b001001: begin //BLT
 			result = A - B;	
 			$display("ALU result %0b", result);
-			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
-            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow
+            carry = B > A; // Borrow in subtraction is the carry here
+            overflow = ~A[31] & B[31] & result[31] | A[31] & ~B[31] & ~result[31]; // Overflow for subtraction
 		end		
 		6'b001010: begin //BEQ 
 			result = A - B;	
 			$display("ALU result %0b", result);
-			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
-            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow
+            carry = B > A; // Borrow in subtraction is the carry here
+            overflow = ~A[31] & B[31] & result[31] | A[31] & ~B[31] & ~result[31]; // Overflow for subtraction
 		end
 		6'b001011: begin //BNE
 			result = A - B;	
 			$display("ALU result %0b", result);
-			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
-            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow
+            carry = B > A; // Borrow in subtraction is the carry here
+            overflow = ~A[31] & B[31] & result[31] | A[31] & ~B[31] & ~result[31]; // Overflow for subtraction
 		end
 	
         default: begin

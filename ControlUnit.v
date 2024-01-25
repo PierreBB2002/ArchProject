@@ -90,8 +90,8 @@ module ControlUnit( opcode, zeroFlag, carryFlag, negFlag, state, mode, PC_src, e
 				read <= 1; 
 				write <= 0; 
 				if (next_state == 4) begin
-				RegW1 <= 1;	 
-				RegW2 <= 1;
+					RegW1 <= 1;	 
+					RegW2 <= 1;
 				end
 			end
 		else if (opcode == 6'b000111) //SW
@@ -99,11 +99,85 @@ module ControlUnit( opcode, zeroFlag, carryFlag, negFlag, state, mode, PC_src, e
 				reg_des <= 1;
 				ALU_src <= 1;
 				ext_src <= 1; 
-				wb_data <= 1; 
-				read <= 1; 
-				write <= 0; 
+				RegW1 <= 0;	 
+				RegW2 <= 0;
+				read <= 0; 
+				if(next_state == 3) begin
+					write <= 1; 
+				end	
+		else if (opcode == 6'b001000 || opcode == 6'b001001 || opcode == 6'b001010 || opcode == 6'b001011)	//Branch
+			begin 
+				reg_des <= 1;
+				ALU_src <= 1;
+				ext_src <= 1;
+				read <= 0;
+				write <= 0;
+			    RegW1 <= 0;
+				RegW2 <= 0;
+			end
+		else if (opcode == 6'b001100) begin
+			j_src <= 0;
+		end
+		else if (opcide == 6'b001110) begin
+			j_src <= 1;
+		end		
+		else if (opcode ]] 6'b010000) begin	
+			wb_data <= 2;
+			if (next_state == 4)  begin
+				RegW1 <= 1;
+			end
+		end
+		
+	endcase
+	
+ end 
+ 
+ always@ (opcode, zeroFlag, carryFlag, negFlag, state , next_state) begin
+	if (next_state == IF_STAGE) begin
+		if (opcode == 6'b001100 || opcode == 6'b001101 || opcode == 6'b001110)	begin // JMP RET CALL
+			PC_src <= 1;
+		end
+		else if (opcode == 6'b001000) begin //BGT 
+			if (carryFlag == 0) begin
+				PC_src <= 2;
+			end
+		else		 
+			begin
+			PC_src <= 0;  
+			end
+		end
+		else if (opcode == 6'b001001) begin //BLT
+			if (negFlag == 1) begin
+				PC_src <= 2;
+			end
+		else
+			begin
+			PC_src <= 0;
+			end
+		end
+		else if (opcode == 6'b001010) begin //BEQ
+			if (zeroFlag == 1) begin
+				PC_src <= 2;
+			end
+		else
+			begin
+			PC_src <= 0;
+			end
+		end	
+		else if (opcode == 6'b001011) begin //BNE
+			if (zeroFlag == 0) begin
+				PC_src <= 2;
+			end
+		else
+			begin
+			PC_src <= 0;
+			end
+		end
+	end
+		
+			
 				
-)
+endmodule
 				
 			
 		
