@@ -1,8 +1,8 @@
 module DataMemStack(
 	input  wire memRead, memWrite, clk,
-	input [31:0] address, data,			
+	input [31:0] address, data,	//data = Rd		
 	input wire [31:0] PC, 
-	input wire [3:0] Rd,
+	input wire [3:0] Rs1,
 	input wire [5:0] opcode,
 	output reg [31:0] Data_out, [31:0] stackOut,
 );					  
