@@ -48,11 +48,33 @@ always @(*) begin
             result = A + B;
 			$display("ALU result %0b", result);
 			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
-            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow for addition
-        end		
-		
-		
-
+            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow
+        end	
+		6'001000: begin //BGT
+			result = A - B;	  
+			$display("ALU result %0b", result);
+			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
+            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow 
+		end
+		6'001001: begin //BLT
+			result = A - B;	
+			$display("ALU result %0b", result);
+			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
+            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow
+		end		
+		6'b001010: begin //BEQ 
+			result = A - B;	
+			$display("ALU result %0b", result);
+			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
+            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow
+		end
+		6'b001011: begin //BNE
+			result = A - B;	
+			$display("ALU result %0b", result);
+			carry = A[31] & B[31] | A[31] & ~result[31] | ~result[31] & B[31]; // Carry out
+            overflow = A[31] & B[31] & ~result[31] | ~A[31] & ~B[31] & result[31]; // Overflow
+		end
+	
         default: begin
             result = 0;
         end

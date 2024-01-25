@@ -18,11 +18,11 @@ module ControlUnit( opcode, zeroFlag, carryFlag, negFlag, state, mode, PC_src, e
 	output reg [2:0] next_state = 'b000;
 	
 
-	parameter IF_STAGE = 'b000;
-	parameter ID_STAGE = 'b001;
-	parameter EX_STAGE = 'b010;
-	parameter MEM_STAGE ='b011;
-	parameter WB_STAGE = 'b100;	
+	parameter IF_STAGE = 0;
+	parameter ID_STAGE = 1;
+	parameter EX_STAGE = 2;
+	parameter MEM_STAGE = 3;
+	parameter WB_STAGE = 4;
 	
 	always@(state) begin
 		case(state)
@@ -53,7 +53,59 @@ module ControlUnit( opcode, zeroFlag, carryFlag, negFlag, state, mode, PC_src, e
 			WB_STAGE: begin
 				next_state = IF_STAGE;
 			end
+		endcase
 		end
+	always@ (state, opcode) begin
+		if (opcode == 6'b000000 || opcode == 6'b000001 || opcode == 6'b000010) //R_type
+			begin
+				reg_des <= 0;
+				ALU_src <= 0;
+				wb_data <= 0;
+			end
+		else if (opcode == 6'b000011 || opcode == 6'b000100) //ADDI ANDI
+			begin
+				reg_des <= 1;
+				ALU_src <= 1;
+				ext_src <= 1; 
+				wb_data <= 0;
+			end
+		else if (opcode == 6'b000101) // LW--> write to Rd
+			begin
+				reg_des <= 1;
+				ALU_src <= 1;
+				ext_src <= 1; 
+				wb_data <= 1;
+				read <= 1; 
+				write <= 0; 
+				if (next_state == 4) begin
+				RegW1 <= 1;
+				end
+			end
+		else if (opcode == 6'b000110) //LWPOI  //////////////////////////////////////////come backkkkk
+			begin
+				reg_des <= 1;
+				ALU_src <= 1;
+				ext_src <= 1; 
+				wb_data <= 1; 
+				read <= 1; 
+				write <= 0; 
+				if (next_state == 4) begin
+				RegW1 <= 1;	 
+				RegW2 <= 1;
+				end
+			end
+		else if (opcode == 6'b000111) //SW
+			begin
+				reg_des <= 1;
+				ALU_src <= 1;
+				ext_src <= 1; 
+				wb_data <= 1; 
+				read <= 1; 
+				write <= 0; 
+				
+)
+				
+			
 		
 		
 			
