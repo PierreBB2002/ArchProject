@@ -116,12 +116,8 @@ module ControlUnit_TestBench;
 
     // Monitor changes
     initial begin
-        $monitor("Time = %t, Opcode = %b, ZeroFlag = %b, CarryFlag = %b, NegFlag = %b, State = %b, PC_src = %b, Ext_src = %b, RegW1 = %b, RegW2 = %b, Read = %b, Write = %b, Reg_des = %b, ALU_src = %b, Wb_data = %b, J_src = %b, Next_state = %b", 
-                 $time, opcode, zeroFlag, carryFlag, negFlag, state, PC_src, ext_src, RegW1, RegW2, read, write,
-                reg_des, ALU_src, wb_data, j_src, next_state);
-    end
-
-    // Additional Test Cases:
+       
+            // Additional Test Cases:
 
     // Test Case: Store Word (SW)
     opcode = 6'b000111; // SW opcode
@@ -176,6 +172,11 @@ module ControlUnit_TestBench;
 
     // Complete the simulation
     $finish;
+    end
+
+ $monitor("Time = %t, Opcode = %b, ZeroFlag = %b, CarryFlag = %b, NegFlag = %b, State = %b, PC_src = %b, Ext_src = %b, RegW1 = %b, RegW2 = %b, Read = %b, Write = %b, Reg_des = %b, ALU_src = %b, Wb_data = %b, J_src = %b, Next_state = %b", 
+                 $time, opcode, zeroFlag, carryFlag, negFlag, state, PC_src, ext_src, RegW1, RegW2, read, write,
+                reg_des, ALU_src, wb_data, j_src, next_state);
 end
 
 endmodule
