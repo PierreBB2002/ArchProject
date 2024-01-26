@@ -167,8 +167,14 @@ module ControlUnit( opcode, zeroFlag, carryFlag, negFlag, state, mode, PC_src, e
 		else if (opcode == 6'b001011) begin //BNE
 			if (zeroFlag == 0) begin
 				PC_src <= 2;
-			end
-		else if (opcode == 6'b001101 || opcode == 6'b001110) begin // CALL RET
+			end	 
+		else
+			begin
+			PC_src <= 0;
+			end	 
+		end
+		
+		else if (opcode == 6'b001100 || opcode == 6'b001101 || opcode == 6'b001110) begin // JMP CALL RET
 			PC_src <= 1; 
 			end
 		else
