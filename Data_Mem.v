@@ -5,6 +5,7 @@ module DataMemStack(
 	input wire [3:0] Rs1,
 	input wire [5:0] opcode,
 	output reg [31:0] Data_out, [31:0] stackOut,
+	input wire [3:0] Rs1, 
 );					  
 
 reg [7:0] data_mem [1023:0]; 
