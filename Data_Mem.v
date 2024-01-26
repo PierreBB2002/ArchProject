@@ -38,15 +38,21 @@ module DataMemStack(
                 data_mem[sp+1] = PC[15:8];
                 data_mem[sp+2] = PC[23:16];
                 data_mem[sp+3] = PC[31:24];
-                // Note: The PC will be set to the target address by the Control Unit
             end
+	    6'b010011: begin // RET
+	       // Load the return address from the stack into Data_out
+	       stackOut = {data_mem[sp+3], data_mem[sp+2], data_mem[sp+1], data_mem[sp]};
+	       // Increment stack pointer after return
+	       sp = sp + 4; 
+	    end
+
             // Add I-type LOAD and STORE instruction cases here
-        	6'b000101: begin // LW
+           6'b000101: begin // LW
         	if (memRead) begin
            	 // Assuming address calculation has been done prior
-            Data_out = {data_mem[address+3], data_mem[address+2], data_mem[address+1], data_mem[address]};
-       	 end
-    end
+                Data_out = {data_mem[address+3], data_mem[address+2], data_mem[address+1], data_mem[address]};
+       	       end
+          end
 		6'b000110: begin // SW
         if (memWrite) begin
             // Assuming address calculation has been done prior
