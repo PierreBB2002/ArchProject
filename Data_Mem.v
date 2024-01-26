@@ -68,6 +68,6 @@ reg [7:0] data_mem [1023:0];
 	end
 		
 
-   	assign Dout = (memR) ? {data_mem[address+3],data_mem[address+2],data_mem[address+1],data_mem[address]} : 32'hzzzzzzzz;
+   	assign Data_out = (memRead) ? {data_mem[address+3],data_mem[address+2],data_mem[address+1],data_mem[address]} : 32'hzzzzzzzz;
 		 
 endmodule
