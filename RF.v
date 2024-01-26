@@ -1,7 +1,7 @@
 module RF(
     input wire clk, reg_write1, reg_write2,
     input [3:0] Rs1, Rs2, Rd,
-    input [31:0] Bus_W,
+    input [31:0] Bus_W,	Bus_W1,
     output wire [31:0] Bus_A, Bus_B
 );		
 
@@ -20,7 +20,7 @@ initial
             register_file[Rd] <= Bus_W;
         end	 
 		else if (reg_write2 && Rs1 != 4'b0) begin // write to Rs1 if LW.POI
-            register_file[Rs1] <= Bus_W;
+            register_file[Rs1] <= Bus_W1;
         end
     end
 

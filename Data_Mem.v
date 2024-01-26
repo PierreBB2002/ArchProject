@@ -2,10 +2,11 @@ module DataMemStack(
 	input  wire memRead, memWrite, clk,
 	input [31:0] address, data,	//data = Rd		
 	input wire [31:0] PC, 
-	input wire [3:0] Rs1,
+	input wire [31:0] Rs1,
 	input wire [5:0] opcode,
-	output reg [31:0] Data_out, [31:0] stackOut,
-	input wire [3:0] Rs1, 
+	output reg [31:0] Data_out,
+	output reg [31:0] stackOut,
+	output reg [31:0] addRs1,
 );					  
 
 reg [7:0] data_mem [1023:0]; 
@@ -44,6 +45,14 @@ reg [7:0] data_mem [1023:0];
 	            Data_out = {data_mem[address+3], data_mem[address+2], data_mem[address+1], data_mem[address]};
 	       		 end
 	   		 end	
+				6'000110: begin // LW.POI
+	        	if (memRead) begin
+	            Data_out = {data_mem[address+3], data_mem[address+2], data_mem[address+1], data_mem[address]};
+				addRs1 = Rs1 + 1; 
+	       		 end
+	   		 end	   
+				
+				
 			6'b000111: begin // SW
       		  if (memWrite) begin
 	            data_mem[address]   = data[7:0]; //Rd is stored in memory
